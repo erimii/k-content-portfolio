@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>K-Content Intelligence Dashboard · 개발 포트폴리오</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-primary: #0a192f;
+  --bg-secondary: #112240;
+  --bg-tertiary: #1d2d50;
+  --text-primary: #ccd6f6;
+  --text-secondary: #8892b0;
+  --text-tertiary: #495670;
+  --accent: #64ffda;
+  --accent-hover: rgba(100, 255, 218, 0.1);
+  --accent-warm: #ff9d76;
+  --accent-purple: #c792ea;
+  --border: rgba(100, 255, 218, 0.15);
+  --shadow: 0 10px 30px -15px rgba(2, 12, 27, 0.7);
+  --font-sans: 'Pretendard', 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Monaco, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  font-size: 16px;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Layout ────────────────────────────────────────────────── */
+.container {
+  display: grid;
+  grid-template-columns: minmax(380px, 1fr) minmax(0, 1.4fr);
+  gap: 64px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 48px;
+  min-height: 100vh;
+}
+
+/* ── 좌측 sticky sidebar ──────────────────────────────────── */
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 96px 0 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar header h1 {
+  color: var(--text-primary);
+  font-size: 42px;
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.sidebar header h2 {
+  color: var(--text-primary);
+  font-size: 18px;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+.sidebar header .tagline {
+  color: var(--text-secondary);
+  margin-top: 20px;
+  max-width: 320px;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.sidebar header .badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 20px;
+}
+
+.sidebar header .badges span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 4px 9px;
+  background: var(--accent-hover);
+  color: var(--accent);
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+/* sticky nav */
+.sidebar nav {
+  margin-top: 56px;
+}
+.sidebar nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.sidebar nav a {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 6px 0;
+  text-decoration: none;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.sidebar nav a::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: currentColor;
+  transition: width 0.25s, background 0.25s;
+}
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color: var(--text-primary);
+}
+.sidebar nav a:hover::before,
+.sidebar nav a.active::before {
+  width: 64px;
+  background: var(--text-primary);
+}
+
+.sidebar footer .meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.sidebar footer .meta strong { color: var(--text-secondary); }
+.sidebar footer .links {
+  display: flex;
+  gap: 14px;
+  margin-top: 16px;
+}
+.sidebar footer .links a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 13px;
+  font-family: var(--font-mono);
+}
+.sidebar footer .links a:hover { color: var(--accent); }
+
+/* ── 우측 콘텐츠 ──────────────────────────────────────────── */
+.content {
+  padding: 96px 0 120px;
+  max-width: 720px;
+}
+
+section {
+  margin-bottom: 96px;
+  scroll-margin-top: 48px;
+}
+
+section h3.section-title {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+section h3.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+h4 {
+  color: var(--text-primary);
+  font-size: 20px;
+  font-weight: 600;
+  margin: 24px 0 8px;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin-bottom: 16px;
+}
+
+p strong, li strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+a.inline {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+  transition: border-color 0.2s;
+}
+a.inline:hover { border-bottom-color: var(--accent); }
+
+ul { padding-left: 0; list-style: none; }
+ul li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+}
+ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  background: var(--bg-secondary);
+  color: var(--accent-warm);
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+pre {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 20px;
+  overflow-x: auto;
+  margin: 20px 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--text-primary);
+}
+pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+/* ── Hero ──────────────────────────────────────────────────── */
+.hero-meta {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin-top: 32px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.hero-meta > div {
+  padding: 16px 20px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.hero-meta > div:nth-child(2n) { border-right: none; }
+.hero-meta > div:nth-last-child(-n+2) { border-bottom: none; }
+.hero-meta .label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--accent);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+.hero-meta .value {
+  color: var(--text-primary);
+  font-weight: 500;
+  font-size: 15px;
+}
+
+/* ── Stack ──────────────────────────────────────────────────── */
+.stack-grid {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 12px 24px;
+  margin-top: 8px;
+}
+.stack-grid dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding-top: 4px;
+  font-weight: 600;
+}
+.stack-grid dd { color: var(--text-secondary); font-size: 14.5px; }
+.stack-grid dd .pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  padding: 3px 9px;
+  margin: 2px 4px 2px 0;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+
+/* ── Feature cards (screenshots) ────────────────────────────── */
+.feature {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 28px;
+  background: var(--bg-secondary);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+.feature:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  background: var(--bg-tertiary);
+}
+.feature .feature-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+.feature h4 {
+  margin: 0;
+  font-size: 18px;
+}
+.feature .num {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.feature .desc {
+  color: var(--text-secondary);
+  font-size: 14.5px;
+  line-height: 1.6;
+  margin: 8px 0 0;
+}
+.feature .desc code {
+  font-size: 12.5px;
+}
+.feature img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  margin-top: 12px;
+  display: block;
+}
+.feature .tech-tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.feature .tech-tags span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--accent-hover);
+  color: var(--accent);
+  padding: 3px 8px;
+  border-radius: 11px;
+}
+
+/* ── Trouble case ──────────────────────────────────────────── */
+.trouble {
+  background: var(--bg-secondary);
+  border-left: 3px solid var(--accent-purple);
+  border-radius: 0 6px 6px 0;
+  padding: 22px 26px;
+  margin: 16px 0 24px;
+}
+.trouble .label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent-purple);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.trouble h4 {
+  margin-top: 0;
+  font-size: 17px;
+}
+.trouble p { font-size: 14.5px; }
+.trouble .arrow {
+  color: var(--accent);
+  font-family: var(--font-mono);
+  margin: 0 6px;
+}
+
+/* ── Metric cards ──────────────────────────────────────────── */
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin: 16px 0;
+}
+.metric {
+  padding: 20px 22px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.metric .big {
+  color: var(--accent);
+  font-size: 28px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  line-height: 1;
+}
+.metric .label {
+  color: var(--text-secondary);
+  font-size: 12.5px;
+  margin-top: 8px;
+}
+
+/* ── Print/PDF ─────────────────────────────────────────────── */
+@media print {
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f7fa;
+    --bg-tertiary: #eef1f6;
+    --text-primary: #0a192f;
+    --text-secondary: #364159;
+    --text-tertiary: #6b7693;
+    --accent: #0066b3;
+    --accent-warm: #c83e00;
+    --accent-purple: #6a3eb5;
+    --border: rgba(0, 102, 179, 0.18);
+  }
+  body { font-size: 11.5pt; }
+  .container { grid-template-columns: 1fr; padding: 0 28pt; gap: 0; }
+  .sidebar { position: static; height: auto; padding: 36pt 0 24pt; border-bottom: 1px solid var(--border); }
+  .sidebar nav { display: none; }
+  .content { padding: 24pt 0; max-width: 100%; }
+  section { margin-bottom: 28pt; page-break-inside: auto; }
+  section h3.section-title { margin-bottom: 14pt; }
+  h4 { margin-top: 14pt; }
+  .feature { page-break-inside: avoid; padding: 16pt; margin-bottom: 12pt; background: var(--bg-secondary); }
+  .feature img { border: 1px solid var(--border); }
+  .trouble { page-break-inside: avoid; }
+  .hero-meta { page-break-inside: avoid; }
+  a { color: var(--accent); }
+  pre { font-size: 9pt; padding: 10pt; }
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding: 0 32px;
+  }
+  .sidebar {
+    position: static;
+    height: auto;
+    padding: 64px 0 32px;
+  }
+  .sidebar nav { display: none; }
+  .content { padding: 32px 0 80px; max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── 좌측 sticky sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+    <header>
+      <h1>K-Content<br>Intelligence<br>Dashboard</h1>
+      <h2>외국 팬의 K-콘텐츠 반응을 한국어 인사이트로</h2>
+      <p class="tagline">Reddit · YouTube · Instagram · TikTok · MyDramaList · Google Trends 6개 SNS를 통합해 한국 마케팅·기획팀에게 데이터 기반 의사결정을 돕는 분석 플랫폼.</p>
+      <div class="badges">
+        <span>Fullstack</span>
+        <span>TypeScript</span>
+        <span>Data Pipeline</span>
+        <span>Anti-bot</span>
+        <span>Self-built</span>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#overview" class="active">01 Overview</a></li>
+          <li><a href="#stack">02 Tech Stack</a></li>
+          <li><a href="#features">03 Features</a></li>
+          <li><a href="#architecture">04 Architecture</a></li>
+          <li><a href="#highlights">05 Highlights</a></li>
+          <li><a href="#challenges">06 Challenges</a></li>
+          <li><a href="#outcomes">07 Outcomes</a></li>
+          <li><a href="#learnings">08 Learnings</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <footer>
+      <div class="meta">
+        <div><strong>Author</strong> 이림 (erimii)</div>
+        <div><strong>Role</strong> 단독 개발 (기획·백·프론트·운영)</div>
+        <div><strong>Period</strong> 2026.04 ~ 진행 중</div>
+        <div><strong>Type</strong> 개인 프로젝트</div>
+      </div>
+      <div class="links">
+        <a href="https://github.com/erimii" target="_blank">GitHub ↗</a>
+        <a href="mailto:contact@example.com">Email ↗</a>
+      </div>
+    </footer>
+  </aside>
+
+  <!-- ── 우측 콘텐츠 ──────────────────────────────────────── -->
+  <main class="content">
+
+    <!-- 01 Overview ──────────────────────────────────────── -->
+    <section id="overview">
+      <h3 class="section-title">01 / Overview</h3>
+      <p>K-콘텐츠가 세계적으로 화제이지만, 한국 마케팅·기획팀은 외국 팬 반응을 영어·스페인어·포르투갈어로 직접 읽어야 했습니다. Netflix Top 10이나 Parrot Analytics 같은 외부 툴은 <strong>시청률 총량만 알려줄 뿐 "어디서 왜 화제인지"는 보여주지 않습니다</strong>.</p>
+
+      <p>그래서 6개 SNS에서 매일 자동으로 데이터를 수집하고, Groq llama-3.3-70b로 한국어 번역해서 한 화면에 보여주는 도구를 단독으로 만들었습니다. 매일 09:40 KST에 cron이 크롤 → SQLite 영구 캐시 저장 → 10:00 KST에 Resend로 한국어 뉴스레터 자동 발송. PM2와 macOS launchd 위에서 <strong>7일 무중단</strong>으로 돌고 있습니다.</p>
+
+      <div class="hero-meta">
+        <div>
+          <div class="label">Code Size</div>
+          <div class="value">TS 14,765 · JS/CSS 6,165</div>
+        </div>
+        <div>
+          <div class="label">Commits</div>
+          <div class="value">73 commits</div>
+        </div>
+        <div>
+          <div class="label">Uptime</div>
+          <div class="value">168시간+ (PM2 + launchd)</div>
+        </div>
+        <div>
+          <div class="label">Auto-send</div>
+          <div class="value">매일 1회 · 7일 연속 성공</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 Stack ─────────────────────────────────────────── -->
+    <section id="stack">
+      <h3 class="section-title">02 / Tech Stack</h3>
+      <dl class="stack-grid">
+        <dt>Runtime</dt>
+        <dd><span class="pill">TypeScript</span><span class="pill">Node.js 25</span><span class="pill">tsx (no build)</span></dd>
+
+        <dt>Backend</dt>
+        <dd><span class="pill">Express</span><span class="pill">SQLite (better-sqlite3)</span><span class="pill">node-cron</span></dd>
+
+        <dt>Crawling</dt>
+        <dd><span class="pill">Playwright + stealth</span><span class="pill">youtubei.js (Innertube)</span><span class="pill">RSS Atom</span></dd>
+
+        <dt>AI / 번역</dt>
+        <dd><span class="pill">Groq Chat API</span><span class="pill">llama-3.3-70b</span><span class="pill">franc (lang detect)</span></dd>
+
+        <dt>Frontend</dt>
+        <dd><span class="pill">Vanilla JS SPA</span><span class="pill">Chart.js v4</span><span class="pill">CSS Custom Properties</span></dd>
+
+        <dt>Email</dt>
+        <dd><span class="pill">Resend</span></dd>
+
+        <dt>운영</dt>
+        <dd><span class="pill">PM2</span><span class="pill">macOS launchd</span></dd>
+      </dl>
+    </section>
+
+    <!-- 03 Features ──────────────────────────────────────── -->
+    <section id="features">
+      <h3 class="section-title">03 / Features</h3>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>다중 소스 통합 K-콘텐츠 트렌드 (Reddit 기반)</h4>
+          <span class="num">F-01</span>
+        </div>
+        <p class="desc">6개 SNS의 작품 언급을 정규화 매칭해 통합 차트로 표시. <strong>TOP 1 작품 언급이 단일 소스 2회 → 통합 26회 (13배 정확도 개선)</strong>.</p>
+        <img src="images/01-dashboard-top.png" alt="대시보드 상단 — K-콘텐츠 트렌드">
+        <div class="tech-tags"><span>Reddit RSS</span><span>정적 사전</span><span>MDL 동적 동기화</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>MyDramaList Top Airing 분석</h4>
+          <span class="num">F-02</span>
+        </div>
+        <p class="desc">MDL Playwright 크롤 + Cloudflare 우회. 방영 중인 K-드라마의 평점·리뷰·시청자 반응을 Groq 번역으로 한국어 인사이트화.</p>
+        <img src="images/02-mdl-airing.png" alt="MDL Top Airing">
+        <div class="tech-tags"><span>Playwright</span><span>Cloudflare 우회</span><span>Groq 번역</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>YouTube 작품별 화제도 + 언어 분포</h4>
+          <span class="num">F-03</span>
+        </div>
+        <p class="desc"><code>youtubei.js</code> Innertube 무인증 API로 18개 해시태그 → 80 영상 × 300 댓글. 채널 분류(공식 푸시/팬 화제/혼합) + 댓글 언어 분포 시각화.</p>
+        <img src="images/03-youtube.png" alt="YouTube 작품별 화제도">
+        <div class="tech-tags"><span>youtubei.js</span><span>채널 분류</span><span>language detect</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>Instagram Reels (헤드풀 트랙)</h4>
+          <span class="num">F-04</span>
+        </div>
+        <p class="desc">32개 해시태그(다국어 10 + 작품 동적 8 포함) × 12 Reel/태그. <strong>안티봇 회피 5종</strong>(마우스 자연 이동·가변 스크롤·자연 진입·캡션 읽기·delay 1.5×) 직접 구현.</p>
+        <img src="images/04-instagram.png" alt="Instagram Reels">
+        <div class="tech-tags"><span>Playwright 헤드풀</span><span>영속 프로필</span><span>A~E 휴리스틱</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>🧪 실험실 — 작품 상세 drill-down</h4>
+          <span class="num">F-05</span>
+        </div>
+        <p class="desc">메인 대시보드에서 작품 클릭 → 실험실 자동 진입 + 작품 자동 선택. 7일 화제도 추이 차트 + 6 SNS 통합 데이터.</p>
+        <img src="images/05-experiment-top.png" alt="작품 상세 분석">
+        <div class="tech-tags"><span>Chart.js</span><span>work_mention_history</span><span>cross-source 통합</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>🗺 Atlas — 글로벌 팬덤 지도 (차별화)</h4>
+          <span class="num">F-06</span>
+        </div>
+        <p class="desc">YouTube 댓글 언어 → 17개 언어 × 30+ 국가 weighted 매핑. 인구 비례 + K-content 활성도로 가중치 결정. <strong>Shannon entropy로 다양성 지표</strong> 0~100점 도입. 외부 툴엔 없는 "어디서 화제인가" 시각화.</p>
+        <img src="images/06-experiment-atlas.png" alt="Atlas 글로벌 팬덤 지도">
+        <div class="tech-tags"><span>언어 → 국가 매핑</span><span>Shannon entropy</span><span>9 region</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>🧬 Viral DNA — Rule-based 신작 viral 점수 (차별화)</h4>
+          <span class="num">F-07</span>
+        </div>
+        <p class="desc">학습 데이터 부재 → ML 대신 도메인 지식 기반. <strong>5 feature 가중합</strong>(momentum 30% · engagement 25% · multi-SNS 20% · organic 15% · lifespan 10%) + <strong>4개 reference 작품과 cosine similarity</strong>로 viral 패턴 매칭.</p>
+        <img src="images/07-experiment-dna.png" alt="Viral DNA 매칭">
+        <div class="tech-tags"><span>rule-based</span><span>cosine similarity</span><span>ML 인터페이스 분리</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>크롤링·스케줄 운영 콘솔</h4>
+          <span class="num">F-08</span>
+        </div>
+        <p class="desc">매일 09:40 cron 자동 + 수동 트리거 (fire-and-forget). <strong>POST 응답 시간 2.5시간 → 6ms</strong>. 5초 폴링 + sessionStorage로 페이지 이동 후에도 결과 자동 복원.</p>
+        <img src="images/08-schedule.png" alt="크롤링·스케줄">
+        <div class="tech-tags"><span>fire-and-forget</span><span>polling</span><span>sessionStorage 복원</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>명작 랭킹 — MyDramaList Popular TOP</h4>
+          <span class="num">F-09</span>
+        </div>
+        <p class="desc">MDL Popular 페이지 크롤 + lazy 분석(클릭 시 상세 분석). 한국어 원제·평점·리뷰 표시.</p>
+        <img src="images/09-ranking.png" alt="명작 랭킹">
+        <div class="tech-tags"><span>MDL Popular</span><span>lazy load</span></div>
+      </div>
+
+      <div class="feature">
+        <div class="feature-head">
+          <h4>비전공자용 도움말</h4>
+          <span class="num">F-10</span>
+        </div>
+        <p class="desc">마케팅·기획 실무자도 이해할 수 있도록 작성. 6단계 파이프라인 그림 + 각 카드 사용법.</p>
+        <img src="images/10-help.png" alt="도움말">
+        <div class="tech-tags"><span>marked</span><span>접근성</span></div>
+      </div>
+    </section>
+
+    <!-- 04 Architecture ──────────────────────────────────── -->
+    <section id="architecture">
+      <h3 class="section-title">04 / Architecture</h3>
+      <p>6단계 데이터 파이프라인 + 영속 캐시 + SPA 렌더의 3-tier 구조. <code>Promise.allSettled</code>로 6개 외부 소스를 격리해 한 소스 실패가 전체에 전파되지 않습니다.</p>
+<pre><code>┌─ Scheduler ────────────────────────────────────────────────┐
+│  매일 09:40 KST  →  Daily Crawl  (Reddit + MDL + GTrends)  │
+│  매일 10:00 KST  →  Newsletter   (Resend)                  │
+│  주간 수동       →  Weekly Crawl (YT + IG + TikTok)        │
+└──────────┬─────────────────────────────────────────────────┘
+           ▼
+┌─ Pipeline (6단계) ──────────────────────────────────────────┐
+│  ① 수집 → ② 필터 → ③ 트렌드 → ④ 인기 → ⑤ 딥분석 → ⑥ 번역  │
+└──────────┬─────────────────────────────────────────────────┘
+           ▼
+┌─ SQLite 영속 캐시 ──────────────────────────────────────────┐
+│  reports · content_snapshots · work_mention_history         │
+│  translation_cache · crawl_logs                             │
+└──────────┬─────────────────────────────────────────────────┘
+           ▼
+┌─ Express + Vanilla JS SPA ──────────────────────────────────┐
+│  대시보드 · 실험실 · 명작 랭킹 · 크롤링·스케줄 · 도움말        │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+    </section>
+
+    <!-- 05 Highlights ────────────────────────────────────── -->
+    <section id="highlights">
+      <h3 class="section-title">05 / Highlights</h3>
+
+      <h4>1. 다중 소스 매칭 알고리즘 (정확도 13배)</h4>
+      <p>정규식 매칭이 영어 축약형(<code>'s</code>, <code>'m</code>)과 인용 댓글을 오탐하는 문제 발견. 노이즈 예외 처리로 코드 복잡도가 커지자 <strong>접근 자체를 폐기</strong>. 정적 사전(한국 드라마 150개) + MDL Top Airing 자동 동기화 사전을 합집합으로 만들고 word-boundary 매칭하는 <strong>hybrid 구조로 재설계</strong>. 한국어 따옴표(「」) 전용 인용 추출로 영어 큰따옴표 오탐 원천 차단. TOP 1 언급 2회 → 26회.</p>
+
+      <h4>2. Anti-bot 우회 — 라이브러리 폐기 후 패러다임 전환</h4>
+      <p>TikTok 1차 API 라이브러리(<code>@tobyg74/tiktok-api-dl</code>)가 DataDome에 100% 차단. Playwright 헤드리스 + stealth도 캡차에 막힘. Instagram에서 검증한 <strong>헤드풀 + 영속 프로필 + 사용자 쿠키</strong> 패턴으로 전환. 회피 휴리스틱 5종 직접 구현:</p>
+      <ul>
+        <li><strong>A</strong> 마우스 자연 이동 (<code>page.mouse.move</code> 10~20 step)</li>
+        <li><strong>B</strong> 가변 스크롤 (200~900px 랜덤 + 30% 확률 멈춤)</li>
+        <li><strong>C</strong> 자연 진입 (30% 확률로 홈/explore 거쳐 hashtag 진입)</li>
+        <li><strong>D</strong> 캡션 읽기 시뮬레이션 (reel당 1~3s 추가 대기)</li>
+        <li><strong>E</strong> 모든 delay 1.5× (HASHTAG_PAGE_WAIT 등)</li>
+      </ul>
+
+      <h4>3. Fire-and-forget 비동기 패턴 (응답 시간 2.5h → 6ms)</h4>
+      <p>주간 크롤 2.5시간 → 브라우저 fetch timeout. <strong>POST는 즉시 202 + jobId 반환</strong>하고 백엔드는 백그라운드 실행. 프론트는 5초 폴링 + <code>sessionStorage</code>로 페이지 이동·새로고침 후에도 결과 자동 복원. 중복 실행 방지(409)로 Playwright 자원 충돌 차단.</p>
+
+      <h4>4. 차별화 카드 — Atlas + Viral DNA</h4>
+      <p><strong>Atlas</strong>: YouTube 댓글 언어 → 30+ 국가 weighted 매핑. 인구 비례 + K-content 활성도로 가중치 직접 결정. Shannon entropy로 다양성 0~100점. <strong>Viral DNA</strong>: 학습 데이터 없는 상황에서 ML 대신 5 feature 가중합 + 4 reference 작품과 cosine similarity로 viral 패턴 매칭.</p>
+
+      <h4>5. 운영 무중단 — PM2 + launchd</h4>
+      <p>시스템 부팅 시 자동 실행 + 프로세스 죽으면 자동 재시작. <code>node-cron</code>으로 매일 09:40 크롤 + 10:00 뉴스레터. anti-bot 차단 시 30분 lockout으로 자기 복구. <strong>uptime 168시간+ 검증, 매일 cron 7회 연속 성공</strong>.</p>
+    </section>
+
+    <!-- 06 Challenges ────────────────────────────────────── -->
+    <section id="challenges">
+      <h3 class="section-title">06 / Challenges</h3>
+
+      <div class="trouble">
+        <div class="label">Case A · 무한 fetch 루프</div>
+        <h4>4번 헛다리 짚은 후 잡은 50ms 무한 사이클</h4>
+        <p><strong>증상</strong>: 실험실 dropdown 클릭하면 열렸다가 즉시 닫힘.</p>
+        <p><strong>가설</strong>: ① 브라우저 캐시 <span class="arrow">→</span> 강제 새로고침 안내 (오답) ② <code>&lt;select&gt;</code> CSS <span class="arrow">→</span> <code>pointer-events:auto</code> 명시 (오답) ③ 옛 JS 캐시 <span class="arrow">→</span> <code>?v=${BUILD_ID}</code> URL 캐시 버스터 (오답) ④ sessionStorage stale <span class="arrow">→</span> 정리 로직 (오답)</p>
+        <p><strong>진단</strong>: Playwright로 직접 띄우고 <code>window.fetch</code> monkey-patch. 8초 동안 fetch가 수십 번 도는 걸 확인.</p>
+        <p><strong>원인</strong>: <code>/api/tiktok</code>이 차단으로 <code>{summary:null}</code> 반환 → state 안 채워짐 → <code>ensureExperimentData</code>가 매 50ms마다 재호출.</p>
+        <p><strong>해결</strong>: <code>state._fetched</code> 플래그 도입. 한 번 시도하면 빈 응답이어도 다시 안 시도.</p>
+      </div>
+
+      <div class="trouble">
+        <div class="label">Case B · 무한 redraw 루프</div>
+        <h4>render() monkey-patch로 추적한 초당 2회 재생성</h4>
+        <p><strong>증상</strong>: 주간 크롤 버튼 누르면 statusText가 0.3초엔 보이고 2.3초엔 사라짐.</p>
+        <p><strong>진단</strong>: <code>render()</code> monkey-patch로 호출 stack 추적 → <code>renderCrawl → loadSchedule → renderPage → renderCrawl</code> 무한 사이클.</p>
+        <p><strong>해결</strong>: <code>loadSchedule</code>에 <code>state.schedule</code> 캐시 가드 + 자동 <code>renderPage()</code> 호출 제거. 명시적 새로고침(사용자 click)만 <code>renderPage</code> 호출하도록 분리.</p>
+      </div>
+
+      <div class="trouble">
+        <div class="label">Case C · Stale element reference</div>
+        <h4>변수 캡처 → DOM 재생성 → detached 참조</h4>
+        <p><strong>증상</strong>: <code>addLog()</code>가 호출되긴 하는데 화면에 안 보임.</p>
+        <p><strong>원인</strong>: 함수 진입 시 <code>const logEl = document.getElementById(...)</code> 캡처 → redraw로 새 element 생성 → 옛 element는 detached.</p>
+        <p><strong>해결</strong>: 변수 캡처 대신 <code>$btn()/$status()/$log()</code> fresh lookup helper로 통일. <code>setStatus</code>, <code>resetBtn</code> 같은 클로저 헬퍼로 매번 신선한 DOM 참조.</p>
+      </div>
+
+      <div class="trouble">
+        <div class="label">Case D · Reddit RSS rate limit</div>
+        <h4>16개 RSS 호출 중 15개 빈 응답 — UA 회전 + backoff</h4>
+        <p><strong>증상</strong>: 4 서브레딧 × 4 sort = 16 RSS 호출 중 15개 빈 응답. 표본 부족으로 24h cutoff가 48h fallback.</p>
+        <p><strong>해결</strong>: User-Agent 4종(Mac/Win/iPhone/Android) 랜덤 회전 + 1.5s → 3s exponential backoff + jitter, 최대 3 시도. 빈 응답(<code>!text.includes('&lt;entry&gt;')</code>)도 throttle로 판단해 재시도.</p>
+      </div>
+
+      <div class="trouble">
+        <div class="label">Case E · 브라우저 캐시 stuck</div>
+        <h4><code>Cache-Control: no-cache</code>로 모자란 강력 캐시</h4>
+        <p><strong>해결</strong>: HTML <code>&lt;script&gt;</code> URL에 BUILD_ID 쿼리 박기. PM2 재시작 시점이 곧 BUILD_ID라 URL이 무조건 달라져 새 파일 fetch 강제.</p>
+        <pre><code>const BUILD_ID = Date.now().toString(36)
+&lt;script src="/static/app.js?v=${BUILD_ID}"&gt;&lt;/script&gt;</code></pre>
+      </div>
+    </section>
+
+    <!-- 07 Outcomes ──────────────────────────────────────── -->
+    <section id="outcomes">
+      <h3 class="section-title">07 / Outcomes</h3>
+      <div class="metric-grid">
+        <div class="metric">
+          <div class="big">13×</div>
+          <div class="label">작품 매칭 정확도<br>(TOP 1 언급 2회 → 26회)</div>
+        </div>
+        <div class="metric">
+          <div class="big">6ms</div>
+          <div class="label">주간 크롤 응답 시간<br>(이전 2.5h)</div>
+        </div>
+        <div class="metric">
+          <div class="big">168h+</div>
+          <div class="label">무중단 운영 검증<br>(PM2 + launchd)</div>
+        </div>
+        <div class="metric">
+          <div class="big">+150%</div>
+          <div class="label">Instagram 데이터 양<br>(reel 20→45, 댓글 518→1.6k)</div>
+        </div>
+        <div class="metric">
+          <div class="big">7회</div>
+          <div class="label">매일 cron 자동 발송<br>연속 성공</div>
+        </div>
+        <div class="metric">
+          <div class="big">73</div>
+          <div class="label">commits<br>(TS 14,765 · JS/CSS 6,165 lines)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 08 Learnings ─────────────────────────────────────── -->
+    <section id="learnings">
+      <h3 class="section-title">08 / Learnings</h3>
+
+      <h4>"사용자 환경 문제겠지"라는 가정이 가장 위험</h4>
+      <p>무한 fetch 루프 사건에서 4번 헛다리 짚었던 건 모두 사용자가 잘못 새로고침했거나 캐시가 안 비워졌다는 가정에서 출발한 가설이었습니다. 그 후로 사용자 보고에 <strong>가정 없이 환경을 재현하고 instrument부터 박는</strong> 습관이 생겼습니다. <code>window.fetch</code> monkey-patch 5분이 가설 4번보다 정확했습니다.</p>
+
+      <h4>외부 의존성에는 항상 plan B</h4>
+      <p>TikTok API 라이브러리가 100% 차단되자 plan B로 전환. 30분 lockout으로 다른 소스와 격리해 한 소스 실패가 전체에 전파되지 않게. Apify 유료 fallback 옵션도 인터페이스 단계에서 준비.</p>
+
+      <h4>학습 데이터 없을 땐 ML보다 도메인 지식</h4>
+      <p>Viral DNA를 ML로 만들 6개월치 데이터가 없는 상황. 도메인 지식을 5개 feature로 분해하는 rule-based가 더 빠르고 설명 가능. 데이터 누적되면 ML로 교체할 수 있도록 인터페이스만 분리해뒀음.</p>
+
+      <h4>새 기능은 격리, 검증 후 promote</h4>
+      <p>Atlas와 Viral DNA를 메인 대시보드가 아닌 별도 "실험실" 페이지에 격리. 1주일 검증 후 promote 결정. 카드 함수를 독립으로 작성해 promote는 호출 위치 5줄만 변경하면 됨. <strong>메인 안정성 보호 + 빠른 실험 동시에</strong>.</p>
+    </section>
+
+  </main>
+</div>
+
+<script>
+// sticky nav 활성 표시 — IntersectionObserver
+const sections = document.querySelectorAll('section[id]')
+const navLinks = document.querySelectorAll('.sidebar nav a')
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      navLinks.forEach((a) => a.classList.remove('active'))
+      const active = document.querySelector(`.sidebar nav a[href="#${entry.target.id}"]`)
+      active && active.classList.add('active')
+    }
+  })
+}, { rootMargin: '-30% 0px -60% 0px' })
+sections.forEach((s) => observer.observe(s))
+</script>
+
+</body>
+</html>
