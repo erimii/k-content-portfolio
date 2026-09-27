@@ -3,26 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="이예림 AI Product Builder 포트폴리오 — 문제 정의부터 AI 제품화, 지표 기반 개선까지">
-  <title>이예림 · AI Product Builder Portfolio</title>
+  <meta name="description" content="이예림 AI Product Builder 포트폴리오. 문제 발견부터 AI 기능 설계, 제품화, 운영까지의 실제 사례를 담았습니다.">
+  <title>이예림 — AI Product Builder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #09090b;
-      --surface: #111115;
-      --surface-2: #18181d;
-      --line: #29292f;
-      --text: #f6f6f7;
-      --muted: #aaaab4;
-      --faint: #777782;
-      --red: #ff334f;
-      --red-soft: rgba(255, 51, 79, .12);
-      --violet: #a78bfa;
-      --mint: #50e3c2;
+      --paper: #f1f0eb;
+      --ink: #151615;
+      --muted: #62645f;
+      --line: #cacbc5;
+      --card: #faf9f5;
+      --blue: #2549d8;
+      --blue-dark: #17349f;
+      --lime: #dfff65;
+      --coral: #ff684f;
       --max: 1180px;
-      --radius: 22px;
+      --serif: Georgia, "Times New Roman", serif;
       --sans: "Noto Sans KR", "DM Sans", system-ui, sans-serif;
     }
 
@@ -30,673 +28,630 @@
     html { scroll-behavior: smooth; }
     body {
       margin: 0;
-      background:
-        radial-gradient(circle at 82% 4%, rgba(255, 51, 79, .14), transparent 26rem),
-        radial-gradient(circle at 5% 34%, rgba(167, 139, 250, .09), transparent 30rem),
-        var(--bg);
-      color: var(--text);
+      background: var(--paper);
+      color: var(--ink);
       font-family: var(--sans);
-      line-height: 1.72;
+      line-height: 1.65;
       word-break: keep-all;
       -webkit-font-smoothing: antialiased;
     }
-
     a { color: inherit; }
-    img { display: block; max-width: 100%; }
-    button { font: inherit; }
+    img { display: block; width: 100%; }
+    ::selection { background: var(--lime); color: var(--ink); }
 
     .skip {
       position: fixed;
-      left: 16px;
+      left: 18px;
       top: -80px;
       z-index: 100;
       padding: 10px 14px;
-      background: white;
-      color: black;
-      border-radius: 10px;
+      background: var(--ink);
+      color: white;
     }
-    .skip:focus { top: 16px; }
+    .skip:focus { top: 18px; }
 
     .nav {
       position: sticky;
       top: 0;
-      z-index: 50;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      background: rgba(9,9,11,.82);
-      backdrop-filter: blur(18px);
+      z-index: 30;
+      border-bottom: 1px solid var(--line);
+      background: rgba(241,240,235,.9);
+      backdrop-filter: blur(14px);
     }
     .nav-inner {
-      width: min(var(--max), calc(100% - 40px));
+      width: min(var(--max), calc(100% - 48px));
+      min-height: 62px;
       margin: 0 auto;
-      min-height: 66px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
     }
     .brand {
+      font: 700 14px/1 "DM Sans", sans-serif;
+      letter-spacing: .08em;
       text-decoration: none;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 800;
-      letter-spacing: -.03em;
+      text-transform: uppercase;
     }
-    .brand-mark {
-      width: 12px;
-      height: 12px;
-      border-radius: 4px;
-      background: var(--red);
-      box-shadow: 0 0 22px rgba(255,51,79,.55);
-      transform: rotate(12deg);
-    }
-    .nav-links { display: flex; gap: 24px; }
+    .nav-links { display: flex; align-items: center; gap: 26px; }
     .nav-links a {
       color: var(--muted);
-      text-decoration: none;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
+      text-decoration: none;
     }
-    .nav-links a:hover { color: white; }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-cta {
+      padding: 8px 14px;
+      border: 1px solid var(--ink);
+      color: var(--ink) !important;
+    }
 
-    .wrap {
-      width: min(var(--max), calc(100% - 40px));
-      margin: 0 auto;
+    main { overflow: hidden; }
+    .wrap { width: min(var(--max), calc(100% - 48px)); margin: 0 auto; }
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--blue);
+      font: 700 12px/1.3 "DM Sans", sans-serif;
+      letter-spacing: .16em;
+      text-transform: uppercase;
     }
 
     .hero {
-      min-height: 720px;
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      align-items: center;
-      gap: 72px;
-      padding: 96px 0 86px;
+      padding: 84px 0 0;
+      border-bottom: 1px solid var(--line);
     }
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      padding: 7px 12px;
-      border: 1px solid rgba(255,51,79,.4);
-      background: var(--red-soft);
-      color: #ff8c9c;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .08em;
-      text-transform: uppercase;
+    .hero-copy {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(260px, .45fr);
+      align-items: end;
+      gap: 48px;
+      margin-bottom: 56px;
     }
     h1 {
-      margin: 24px 0 22px;
-      font-size: clamp(48px, 7vw, 84px);
-      line-height: 1.04;
-      letter-spacing: -.065em;
-    }
-    h1 em { color: var(--red); font-style: normal; }
-    .hero-copy {
-      max-width: 690px;
+      max-width: 850px;
       margin: 0;
-      color: #c8c8d0;
-      font-size: clamp(18px, 2vw, 22px);
-      line-height: 1.65;
-      letter-spacing: -.02em;
+      font-size: clamp(48px, 7.5vw, 104px);
+      line-height: .98;
+      letter-spacing: -.075em;
+      font-weight: 800;
     }
-    .hero-copy strong { color: white; }
-    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-    .button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 48px;
-      padding: 0 18px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: var(--surface-2);
-      color: white;
-      text-decoration: none;
-      font-size: 14px;
-      font-weight: 700;
-      transition: transform .2s, border-color .2s, background .2s;
-    }
-    .button:hover { transform: translateY(-2px); border-color: #4a4a54; }
-    .button.primary { background: var(--red); border-color: var(--red); }
-
-    .hero-proof {
+    h1 .accent {
       position: relative;
-      padding: 26px;
-      background: linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025));
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 28px;
-      box-shadow: 0 32px 80px rgba(0,0,0,.35);
+      z-index: 0;
+      white-space: nowrap;
     }
-    .hero-proof::before {
+    h1 .accent::after {
       content: "";
       position: absolute;
-      inset: -1px;
       z-index: -1;
-      border-radius: inherit;
-      background: linear-gradient(140deg, rgba(255,51,79,.4), transparent 35%, rgba(167,139,250,.25));
-      filter: blur(16px);
-      opacity: .55;
+      left: -.03em;
+      right: -.05em;
+      bottom: .03em;
+      height: .26em;
+      background: var(--lime);
+      transform: rotate(-1deg);
     }
-    .proof-label { color: var(--faint); font-size: 12px; font-weight: 700; letter-spacing: .1em; }
-    .proof-list { display: grid; gap: 10px; margin-top: 18px; }
-    .proof {
-      display: grid;
-      grid-template-columns: 40px 1fr;
-      gap: 14px;
-      padding: 15px;
-      border-radius: 15px;
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.055);
+    .hero-note {
+      margin: 0 0 7px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.75;
     }
-    .proof-no {
-      width: 40px;
-      height: 40px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      background: var(--red-soft);
-      color: #ff7589;
-      font-weight: 800;
-    }
-    .proof strong { display: block; font-size: 14px; }
-    .proof span { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .hero-note strong { color: var(--ink); font-weight: 700; }
 
-    .section { padding: 104px 0; border-top: 1px solid var(--line); }
-    .section-head {
-      display: grid;
-      grid-template-columns: .7fr 1.3fr;
-      gap: 56px;
-      margin-bottom: 54px;
+    .hero-shot {
+      position: relative;
+      padding: 38px 38px 0;
+      background: var(--blue);
+      border-radius: 2px 2px 0 0;
     }
-    .section-kicker {
-      margin: 0 0 12px;
-      color: var(--red);
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: .1em;
+    .browser {
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.38);
+      background: white;
+      box-shadow: 0 28px 60px rgba(14,20,50,.25);
+    }
+    .browser-top {
+      height: 27px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 0 10px;
+      border-bottom: 1px solid #ddd;
+      background: #efefef;
+    }
+    .browser-top i { width: 7px; height: 7px; border-radius: 50%; background: #bbb; }
+    .hero-shot .caption {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      color: white;
+      font: 600 11px/1 "DM Sans", sans-serif;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+
+    .quick {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+    }
+    .quick > div { padding: 25px 28px; border-right: 1px solid var(--line); }
+    .quick > div:last-child { border-right: 0; }
+    .quick dt {
+      margin-bottom: 7px;
+      color: var(--muted);
+      font: 600 10px/1.2 "DM Sans", sans-serif;
+      letter-spacing: .13em;
       text-transform: uppercase;
     }
-    h2 {
+    .quick dd { margin: 0; font-size: 14px; font-weight: 700; }
+
+    .section { padding: 118px 0; border-bottom: 1px solid var(--line); }
+    .section-head {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 60px;
+      align-items: start;
+      margin-bottom: 64px;
+    }
+    .section h2 {
       margin: 0;
-      font-size: clamp(34px, 4.8vw, 58px);
-      line-height: 1.13;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.05;
       letter-spacing: -.05em;
     }
-    .section-lead { margin: 3px 0 0; color: var(--muted); font-size: 17px; }
-    .section-lead strong { color: white; }
-
-    .fit-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .fit-card {
-      padding: 25px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--surface);
+    .section-lead {
+      max-width: 620px;
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.8;
     }
-    .fit-card .num { color: var(--red); font-weight: 800; font-size: 13px; }
-    .fit-card h3 { margin: 16px 0 10px; font-size: 20px; letter-spacing: -.03em; }
-    .fit-card p { margin: 0; color: var(--muted); font-size: 14px; }
-    .fit-card .evidence {
-      margin-top: 18px;
-      padding-top: 16px;
+
+    .project-index { padding: 86px 0; border-bottom: 1px solid var(--line); }
+    .index-row {
+      display: grid;
+      grid-template-columns: 70px 1fr 1fr 90px;
+      gap: 24px;
+      align-items: center;
+      padding: 26px 0;
       border-top: 1px solid var(--line);
-      color: #dedee4;
-      font-size: 13px;
-      font-weight: 600;
+      text-decoration: none;
+      transition: color .2s, padding .2s;
     }
+    .index-row:last-child { border-bottom: 1px solid var(--line); }
+    .index-row:hover { color: var(--blue); padding-left: 10px; }
+    .index-no { color: var(--muted); font: 600 12px/1 "DM Sans", sans-serif; }
+    .index-title { font-size: clamp(22px, 3vw, 36px); font-weight: 800; letter-spacing: -.04em; }
+    .index-desc { color: var(--muted); font-size: 14px; }
+    .index-arrow { justify-self: end; font-size: 28px; }
 
-    .case {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      background: var(--surface);
+    .case-titlebar {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 24px;
+      margin-bottom: 34px;
     }
-    .case + .case { margin-top: 30px; }
-    .case-top { padding: 34px 34px 28px; }
-    .case-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-    .tag {
-      padding: 5px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,.06);
-      color: #c7c7cf;
-      font-size: 11px;
-      font-weight: 700;
+    .case-no { color: var(--blue); font: 700 12px/1 "DM Sans", sans-serif; letter-spacing: .12em; }
+    .case-titlebar h2 { max-width: 900px; }
+    .case-sub {
+      max-width: 760px;
+      margin: 0 0 55px;
+      color: var(--muted);
+      font-size: 19px;
     }
-    .tag.red { background: var(--red-soft); color: #ff8496; }
-    .case h3 { margin: 0; font-size: clamp(28px, 4vw, 42px); letter-spacing: -.045em; line-height: 1.18; }
-    .case-summary { max-width: 820px; margin: 16px 0 0; color: var(--muted); font-size: 16px; }
+    .case-sub strong { color: var(--ink); }
 
     .metric-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
+      border: 1px solid var(--ink);
+      margin: 0 0 78px;
+      background: var(--card);
     }
-    .metric { padding: 24px; border-right: 1px solid var(--line); }
+    .metric { min-height: 168px; padding: 24px; border-right: 1px solid var(--ink); }
     .metric:last-child { border-right: 0; }
-    .metric strong { display: block; color: white; font-size: 28px; letter-spacing: -.04em; }
-    .metric span { display: block; margin-top: 5px; color: var(--faint); font-size: 11px; line-height: 1.45; }
-
-    .case-body { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; padding: 34px; }
-    .story {
-      padding: 20px;
-      background: var(--surface-2);
-      border-radius: 16px;
+    .metric strong {
+      display: block;
+      margin: 20px 0 10px;
+      font: 700 clamp(29px, 3.6vw, 48px)/1 "DM Sans", sans-serif;
+      letter-spacing: -.05em;
     }
-    .story + .story { margin-top: 12px; }
-    .story-label { color: var(--red); font-size: 11px; font-weight: 800; letter-spacing: .08em; }
-    .story h4 { margin: 8px 0 8px; font-size: 17px; }
-    .story p { margin: 0; color: var(--muted); font-size: 13px; }
+    .metric span { color: var(--muted); font-size: 12px; }
+    .metric .mini {
+      margin: 0;
+      color: var(--blue);
+      font: 700 10px/1 "DM Sans", sans-serif;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
 
-    .flow { display: grid; gap: 9px; }
-    .flow-step {
-      position: relative;
+    .story-grid {
       display: grid;
-      grid-template-columns: 36px 1fr;
-      gap: 12px;
-      align-items: center;
-      min-height: 66px;
-      padding: 13px 15px;
-      background: #0d0d11;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      margin-bottom: 80px;
+      background: var(--line);
       border: 1px solid var(--line);
-      border-radius: 14px;
     }
-    .flow-step:not(:last-child)::after {
-      content: "↓";
-      position: absolute;
-      left: 26px;
-      bottom: -18px;
-      z-index: 2;
-      color: var(--red);
-      font-size: 14px;
+    .story {
+      min-height: 310px;
+      padding: 38px;
+      background: var(--card);
     }
-    .flow-icon {
-      width: 34px;
-      height: 34px;
-      display: grid;
+    .story-num {
+      display: inline-grid;
       place-items: center;
-      border-radius: 10px;
-      background: var(--red-soft);
-      color: #ff7589;
-      font-size: 13px;
-      font-weight: 800;
+      width: 31px;
+      height: 31px;
+      margin-bottom: 58px;
+      background: var(--ink);
+      color: white;
+      border-radius: 50%;
+      font: 700 11px/1 "DM Sans", sans-serif;
     }
-    .flow-step strong { display: block; font-size: 13px; }
-    .flow-step span { color: var(--faint); font-size: 11px; }
+    .story h3 { margin: 0 0 13px; font-size: 22px; letter-spacing: -.035em; }
+    .story p { margin: 0; color: var(--muted); font-size: 15px; }
+    .story mark { padding: 0 .1em; background: var(--lime); color: var(--ink); }
 
-    .gallery { display: grid; grid-template-columns: 1.5fr 1fr; gap: 12px; padding: 0 34px 34px; }
-    .shot {
+    .showcase { display: grid; grid-template-columns: 1.55fr .75fr; gap: 22px; align-items: start; }
+    .figure { margin: 0; }
+    .figure-frame {
       overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 16px;
-      background: #050506;
+      background: white;
     }
-    .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-    .shot-stack { display: grid; gap: 12px; }
+    .figure figcaption {
+      display: flex;
+      gap: 14px;
+      align-items: baseline;
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .figure figcaption b { color: var(--ink); font: 700 11px/1 "DM Sans", sans-serif; letter-spacing: .08em; }
+    .side-stack { display: grid; gap: 28px; }
 
-    .decision {
+    .case-blue { background: var(--blue); color: white; }
+    .case-blue .eyebrow, .case-blue .case-no { color: var(--lime); }
+    .case-blue .case-sub { color: rgba(255,255,255,.72); }
+    .case-blue .case-sub strong { color: white; }
+    .pivot {
       display: grid;
-      grid-template-columns: 1fr auto 1fr auto 1fr;
+      grid-template-columns: 1fr 84px 1fr;
       align-items: stretch;
-      gap: 12px;
+      gap: 0;
+      margin: 0 0 72px;
+    }
+    .pivot-card {
+      min-height: 280px;
       padding: 34px;
+      border: 1px solid rgba(255,255,255,.55);
+      background: rgba(255,255,255,.06);
     }
-    .decision-card {
-      padding: 22px;
-      border-radius: 17px;
-      background: var(--surface-2);
-      border: 1px solid var(--line);
-    }
-    .decision-card b { display: block; color: var(--red); font-size: 12px; letter-spacing: .08em; }
-    .decision-card strong { display: block; margin: 10px 0 6px; font-size: 18px; }
-    .decision-card p { margin: 0; color: var(--muted); font-size: 13px; }
-    .arrow { display: grid; place-items: center; color: var(--red); font-size: 22px; }
-
-    .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    .principle { padding: 26px; border-top: 2px solid var(--red); background: var(--surface); }
-    .principle h3 { margin: 0 0 10px; font-size: 18px; }
-    .principle p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .contact {
+    .pivot-card.after { background: var(--lime); color: var(--ink); border-color: var(--lime); }
+    .pivot-card small { font: 700 10px/1 "DM Sans", sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+    .pivot-card h3 { margin: 66px 0 15px; font-size: clamp(25px, 3vw, 40px); line-height: 1.13; letter-spacing: -.04em; }
+    .pivot-card p { margin: 0; opacity: .72; font-size: 14px; }
+    .pivot-arrow { display: grid; place-items: center; font-size: 32px; }
+    .build-list {
       display: grid;
-      grid-template-columns: 1.15fr .85fr;
-      gap: 40px;
-      align-items: end;
-      padding: 58px;
-      border: 1px solid rgba(255,51,79,.28);
-      border-radius: 30px;
-      background: linear-gradient(140deg, rgba(255,51,79,.13), rgba(167,139,250,.06));
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid rgba(255,255,255,.45);
+      border-bottom: 1px solid rgba(255,255,255,.45);
     }
-    .contact h2 { font-size: clamp(36px, 5vw, 62px); }
-    .contact p { color: var(--muted); max-width: 640px; }
-    .contact-links { display: grid; gap: 10px; }
-    .contact-links a {
-      padding: 14px 16px;
-      border: 1px solid rgba(255,255,255,.13);
-      border-radius: 13px;
-      background: rgba(0,0,0,.2);
+    .build-item { padding: 34px 28px; border-right: 1px solid rgba(255,255,255,.45); }
+    .build-item:last-child { border-right: 0; }
+    .build-item b { display: block; margin-bottom: 45px; color: var(--lime); font: 700 11px/1 "DM Sans", sans-serif; letter-spacing: .12em; }
+    .build-item h3 { margin: 0 0 12px; font-size: 20px; }
+    .build-item p { margin: 0; color: rgba(255,255,255,.7); font-size: 14px; }
+    .case-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 42px; }
+    .case-links a {
+      padding: 11px 17px;
+      border: 1px solid rgba(255,255,255,.7);
       text-decoration: none;
       font-size: 13px;
       font-weight: 700;
     }
-    .contact-links a:hover { border-color: var(--red); }
+    .case-links a:hover { background: white; color: var(--blue); }
 
-    footer { padding: 34px 0 52px; color: var(--faint); font-size: 12px; }
-    footer .wrap { display: flex; justify-content: space-between; gap: 20px; }
+    .fit-grid {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 100px;
+      align-items: start;
+    }
+    .fit-statement {
+      position: sticky;
+      top: 110px;
+    }
+    .fit-statement h2 { margin: 0 0 26px; }
+    .fit-statement p { margin: 0; color: var(--muted); font-size: 17px; }
+    .fit-list { border-top: 1px solid var(--ink); }
+    .fit-item {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 22px;
+      padding: 30px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .fit-item span { color: var(--blue); font: 700 11px/1.4 "DM Sans", sans-serif; }
+    .fit-item h3 { margin: 0 0 8px; font-size: 20px; }
+    .fit-item p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .closing {
+      padding: 92px 0 45px;
+      background: var(--ink);
+      color: white;
+    }
+    .closing h2 {
+      max-width: 870px;
+      margin: 0 0 55px;
+      font-size: clamp(40px, 6.5vw, 82px);
+      line-height: 1.02;
+      letter-spacing: -.06em;
+    }
+    .closing h2 em { color: var(--lime); font-family: var(--serif); font-weight: 400; }
+    .contact-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 28px;
+      align-items: center;
+      padding: 26px 0;
+      border-top: 1px solid rgba(255,255,255,.25);
+    }
+    .contact-links { display: flex; flex-wrap: wrap; gap: 22px; }
+    .contact-links a { color: rgba(255,255,255,.78); font-size: 13px; text-decoration: none; }
+    .contact-links a:hover { color: var(--lime); }
+    .copyright { color: rgba(255,255,255,.45); font: 500 11px/1 "DM Sans", sans-serif; }
 
     @media (max-width: 900px) {
-      .hero { min-height: auto; grid-template-columns: 1fr; gap: 44px; padding-top: 74px; }
-      .section-head { grid-template-columns: 1fr; gap: 20px; }
-      .fit-grid, .principles { grid-template-columns: 1fr; }
-      .case-body { grid-template-columns: 1fr; }
-      .metric-grid { grid-template-columns: 1fr 1fr; }
+      .hero-copy, .section-head, .fit-grid { grid-template-columns: 1fr; gap: 30px; }
+      .hero-copy { margin-bottom: 40px; }
+      .hero-note { max-width: 600px; }
+      .quick { grid-template-columns: 1fr; }
+      .quick > div { border-right: 0; border-bottom: 1px solid var(--line); }
+      .quick > div:last-child { border-bottom: 0; }
+      .index-row { grid-template-columns: 50px 1fr 44px; }
+      .index-desc { display: none; }
+      .metric-grid { grid-template-columns: repeat(2, 1fr); }
       .metric:nth-child(2) { border-right: 0; }
-      .metric:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
-      .decision { grid-template-columns: 1fr; }
-      .arrow { transform: rotate(90deg); }
-      .contact { grid-template-columns: 1fr; padding: 36px; }
+      .metric:nth-child(-n+2) { border-bottom: 1px solid var(--ink); }
+      .story-grid, .showcase { grid-template-columns: 1fr; }
+      .pivot { grid-template-columns: 1fr; }
+      .pivot-arrow { height: 70px; transform: rotate(90deg); }
+      .build-list { grid-template-columns: 1fr; }
+      .build-item { border-right: 0; border-bottom: 1px solid rgba(255,255,255,.45); }
+      .build-item:last-child { border-bottom: 0; }
+      .fit-statement { position: static; }
     }
 
     @media (max-width: 620px) {
-      .nav-links { display: none; }
       .wrap, .nav-inner { width: min(100% - 28px, var(--max)); }
-      .hero { padding: 62px 0 70px; }
-      h1 { font-size: 48px; }
-      .section { padding: 76px 0; }
-      .case-top, .case-body, .decision { padding: 24px; }
-      .gallery { grid-template-columns: 1fr; padding: 0 24px 24px; }
-      .metric { padding: 18px; }
-      .metric strong { font-size: 23px; }
-      .contact { padding: 28px; }
-      footer .wrap { flex-direction: column; }
-    }
-
-    @media print {
-      body { background: white; color: #151515; }
-      .nav, .actions { display: none; }
-      .hero { min-height: auto; padding: 36px 0; }
-      .hero-proof, .fit-card, .case, .principle, .contact { break-inside: avoid; box-shadow: none; }
-      .section { padding: 44px 0; border-color: #ddd; }
-      .case, .fit-card, .principle, .contact, .story, .flow-step, .decision-card { background: white; border-color: #ccc; }
-      h1, h2, h3, h4, strong, .proof strong, .metric strong { color: #111 !important; }
-      p, span, .section-lead, .case-summary, .story p { color: #444 !important; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .hero { padding-top: 54px; }
+      h1 { font-size: clamp(45px, 15vw, 70px); }
+      .hero-shot { margin-left: -14px; margin-right: -14px; padding: 22px 14px 0; }
+      .hero-shot .caption { display: none; }
+      .section { padding: 84px 0; }
+      .project-index { padding: 60px 0; }
+      .index-row { grid-template-columns: 34px 1fr 30px; gap: 10px; }
+      .metric-grid { grid-template-columns: 1fr 1fr; }
+      .metric { min-height: 145px; padding: 18px; }
+      .metric strong { font-size: 30px; }
+      .story { min-height: 0; padding: 28px; }
+      .story-num { margin-bottom: 36px; }
+      .pivot-card { min-height: 245px; padding: 27px; }
+      .contact-row { align-items: flex-start; flex-direction: column; }
     }
   </style>
 </head>
 <body>
-  <a class="skip" href="#main">본문으로 이동</a>
-  <nav class="nav" aria-label="주요 섹션">
+  <a class="skip" href="#content">본문으로 이동</a>
+  <nav class="nav" aria-label="주요 메뉴">
     <div class="nav-inner">
-      <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true"></span>이예림 · Product Builder</a>
+      <a class="brand" href="#">Yerim Lee / Portfolio</a>
       <div class="nav-links">
-        <a href="#fit">직무 적합성</a>
-        <a href="#case-1">프로젝트</a>
-        <a href="#principles">일하는 방식</a>
-        <a href="#contact">링크</a>
+        <a href="#projects">Projects</a>
+        <a href="#fit">Why me</a>
+        <a class="nav-cta" href="mailto:990303amy88@gmail.com">Contact ↗</a>
       </div>
     </div>
   </nav>
 
-  <main id="main">
-    <header class="wrap hero" id="top">
-      <div>
-        <span class="eyebrow">AI Product Builder Portfolio · 2026</span>
-        <h1>AI를 붙이는 사람이 아니라,<br><em>쓰이는 제품</em>을 만듭니다.</h1>
-        <p class="hero-copy">
-          문제를 정의하고, 적합한 AI를 선택해 제품화한 뒤, 사용 지표로 다시 개선합니다.
-          K-콘텐츠 현업에서 <strong>다중 소스 AI 인사이트 도구</strong>와
-          <strong>실사용자 기반 영상 학습 제품</strong>을 기획부터 운영까지 완결했습니다.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="#case-1">핵심 프로젝트 보기</a>
-          <a class="button" href="https://github.com/erimii" target="_blank" rel="noreferrer">GitHub ↗</a>
-          <a class="button" href="mailto:990303amy88@gmail.com">Email</a>
+  <main id="content">
+    <header class="hero">
+      <div class="wrap">
+        <p class="eyebrow">AI Product Builder · 2026 Portfolio</p>
+        <div class="hero-copy">
+          <h1>문제를 찾고,<br><span class="accent">쓰이는 제품</span>으로<br>답합니다.</h1>
+          <p class="hero-note">안녕하세요, 이예림입니다. 사용자 반응에서 문제를 발견하고 <strong>AI 기능을 실제 서비스와 운영 체계로 연결</strong>해 왔습니다.</p>
         </div>
+        <div class="hero-shot">
+          <span class="caption">Live product · K-content intelligence</span>
+          <div class="browser">
+            <div class="browser-top" aria-hidden="true"><i></i><i></i><i></i></div>
+            <img src="images/01-dashboard-top.png" alt="K-Content Intelligence Dashboard 실제 화면">
+          </div>
+        </div>
+        <dl class="quick">
+          <div><dt>Role</dt><dd>기획 · 설계 · 개발 · 운영</dd></div>
+          <div><dt>Working style</dt><dd>가설보다 사용 로그와 현장 관찰</dd></div>
+          <div><dt>Core strength</dt><dd>아이디어를 제품으로 끝까지 구현</dd></div>
+        </dl>
       </div>
-      <aside class="hero-proof" aria-label="핵심 역량 요약">
-        <div class="proof-label">ROLE → EVIDENCE</div>
-        <div class="proof-list">
-          <div class="proof">
-            <div class="proof-no">01</div>
-            <div><strong>AI 과제 발굴·정의</strong><span>분산된 글로벌 팬 반응을 현업 의사결정 문제로 구조화</span></div>
-          </div>
-          <div class="proof">
-            <div class="proof-no">02</div>
-            <div><strong>LLM 업무도구 제품화</strong><span>수집·번역·요약·뉴스레터까지 반복 업무를 하나의 제품으로 자동화</span></div>
-          </div>
-          <div class="proof">
-            <div class="proof-no">03</div>
-            <div><strong>사용 지표 기반 개선</strong><span>실사용자 이탈과 기능 반응을 근거로 제품 콘셉트 전환</span></div>
-          </div>
-        </div>
-      </aside>
     </header>
 
+    <section class="project-index" id="projects">
+      <div class="wrap">
+        <p class="eyebrow">Selected work</p>
+        <a class="index-row" href="#case-01">
+          <span class="index-no">01</span>
+          <span class="index-title">K-Content Intelligence</span>
+          <span class="index-desc">흩어진 글로벌 반응을 의사결정 도구로</span>
+          <span class="index-arrow">↘</span>
+        </a>
+        <a class="index-row" href="#case-02">
+          <span class="index-no">02</span>
+          <span class="index-title">JinJJa-K</span>
+          <span class="index-desc">광고 유입 사용자의 행동으로 제품을 전환</span>
+          <span class="index-arrow">↘</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="section" id="case-01">
+      <div class="wrap">
+        <div class="case-titlebar">
+          <div>
+            <p class="case-no">CASE 01 · AI INTELLIGENCE PRODUCT</p>
+            <h2>K-Content Intelligence Dashboard</h2>
+          </div>
+        </div>
+        <p class="case-sub">Reddit, YouTube, Instagram 등 <strong>6개 채널에 흩어진 K-콘텐츠 반응을 수집·분석해, 매주 의사결정에 쓰이는 하나의 화면</strong>으로 만들었습니다.</p>
+
+        <div class="metric-grid" aria-label="프로젝트 주요 성과">
+          <div class="metric"><p class="mini">Signal capture</p><strong>2 → 26</strong><span>TOP1 유효 언급 포착 수</span></div>
+          <div class="metric"><p class="mini">AI efficiency</p><strong>−90%</strong><span>캐시 적용 후 Groq 호출</span></div>
+          <div class="metric"><p class="mini">Reliability</p><strong>168h</strong><span>7일 연속 중단 없이 운영</span></div>
+          <div class="metric"><p class="mini">Delivery</p><strong>7회</strong><span>주간 뉴스레터 발송</span></div>
+        </div>
+
+        <div class="story-grid">
+          <article class="story">
+            <span class="story-num">1</span>
+            <h3>Problem — 정보는 많지만 판단은 느렸다</h3>
+            <p>플랫폼마다 검색 방식과 지표가 달라, 하나의 작품에 대한 해외 반응을 비교하려면 매주 약 2시간 30분의 수작업이 필요했습니다.</p>
+          </article>
+          <article class="story">
+            <span class="story-num">2</span>
+            <h3>Decision — ‘수집량’보다 유효 언급</h3>
+            <p>검색 결과를 무작정 늘리는 대신 작품명·출연진·맥락을 조합한 질의를 설계했습니다. 그 결과 TOP1 기준 <mark>유효 언급이 2건에서 26건</mark>으로 늘었습니다.</p>
+          </article>
+          <article class="story">
+            <span class="story-num">3</span>
+            <h3>Build — 분석부터 전달까지 한 흐름으로</h3>
+            <p>TypeScript, Playwright, Groq, SQLite로 수집·AI 분석·스케줄링·메일 발송을 연결했습니다. 작업 요청은 즉시 job ID를 반환하고 처리는 백그라운드에서 이어지게 했습니다.</p>
+          </article>
+          <article class="story">
+            <span class="story-num">4</span>
+            <h3>Operate — 제품은 배포 이후가 시작</h3>
+            <p>캐시 적중률 90% 이상을 유지해 AI 호출을 줄이고, 168시간 연속 운영과 7회의 뉴스레터 발송으로 실제 반복 업무를 견디는지 검증했습니다.</p>
+          </article>
+        </div>
+
+        <div class="showcase">
+          <figure class="figure">
+            <div class="figure-frame"><img src="images/06-experiment-atlas.png" alt="작품별 해외 반응 분석 화면"></div>
+            <figcaption><b>01 / ANALYSIS</b><span>채널별 반응과 AI 분석을 한 화면에서 비교</span></figcaption>
+          </figure>
+          <div class="side-stack">
+            <figure class="figure">
+              <div class="figure-frame"><img src="images/08-schedule.png" alt="분석 스케줄 관리 화면"></div>
+              <figcaption><b>02 / OPS</b><span>반복 분석과 전달 일정 관리</span></figcaption>
+            </figure>
+            <figure class="figure">
+              <div class="figure-frame"><img src="images/09-ranking.png" alt="콘텐츠 반응 순위 화면"></div>
+              <figcaption><b>03 / SIGNAL</b><span>콘텐츠별 반응을 빠르게 탐색</span></figcaption>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section case-blue" id="case-02">
+      <div class="wrap">
+        <p class="case-no">CASE 02 · USER-LED PRODUCT PIVOT</p>
+        <div class="case-titlebar">
+          <h2>JinJJa-K</h2>
+        </div>
+        <p class="case-sub">처음 정한 기능을 지키는 대신, <strong>실제 광고 유입 사용자의 행동을 보고 제품의 중심을 바꿨습니다.</strong> 웹 서비스에서 시작해 Android 앱 출시까지 이어진 K-드라마 문화 맥락 학습 플랫폼입니다.</p>
+
+        <div class="pivot">
+          <article class="pivot-card">
+            <small>Before · Initial hypothesis</small>
+            <h3>장면을 따라 말하고<br>연기하는 학습</h3>
+            <p>참여형 기능이 체류와 반복 사용을 만들 것이라는 초기 가설</p>
+          </article>
+          <div class="pivot-arrow" aria-hidden="true">→</div>
+          <article class="pivot-card after">
+            <small>After · Behavior-led pivot</small>
+            <h3>드라마 속 문화 맥락을<br>바로 이해하는 학습</h3>
+            <p>실제 사용자가 장면의 표현과 관계, 문화적 배경을 확인하는 행동에 더 집중한다는 점을 반영</p>
+          </article>
+        </div>
+
+        <div class="build-list">
+          <article class="build-item">
+            <b>01 / EXPERIENCE</b>
+            <h3>Scene Decoder</h3>
+            <p>장면을 보다가 막히는 표현과 문화적 맥락을 흐름을 끊지 않고 탐색하도록 설계했습니다.</p>
+          </article>
+          <article class="build-item">
+            <b>02 / MEASUREMENT</b>
+            <h3>행동 데이터 구조</h3>
+            <p>원본 이벤트, 세션, 일별 분석 데이터를 분리해 제품 개선에 필요한 행동 흐름을 볼 수 있게 했습니다.</p>
+          </article>
+          <article class="build-item">
+            <b>03 / DELIVERY</b>
+            <h3>웹에서 앱까지</h3>
+            <p>React·Cloudflare 기반 웹을 React Native WebView 하이브리드 앱으로 확장해 Android 스토어에 출시했습니다.</p>
+          </article>
+        </div>
+        <div class="case-links">
+          <a href="https://kduck.net" target="_blank" rel="noopener">서비스 보기 ↗</a>
+          <a href="https://github.com/erimii/hybrid-app-case-study" target="_blank" rel="noopener">앱 전환 기록 ↗</a>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="fit">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="section-kicker">Role Fit</p>
-            <h2>공고의 세 문장을<br>실제 결과로 증명합니다.</h2>
-          </div>
-          <p class="section-lead">
-            컴퓨터공학을 전공하고, 비에스에이치에스 소속으로 CJ 사내벤처팀에 파견되어
-            개발·UI/UX·서비스 기획을 함께 수행했습니다. 제 강점은 기술 하나가 아니라
-            <strong>문제 정의 → 프로토타입 → 운영 → 개선</strong>을 끊기지 않게 연결하는 실행력입니다.
-          </p>
+      <div class="wrap fit-grid">
+        <div class="fit-statement">
+          <p class="eyebrow">How I build</p>
+          <h2>AI를 붙이는 사람이 아니라,<br>AI가 필요한 문제를 고릅니다.</h2>
+          <p>새 기술 자체보다 사용자의 반복 행동과 운영 병목에서 기회를 찾습니다. 그리고 작은 검증에서 멈추지 않고, 실제로 쓰이고 측정되는 제품까지 연결합니다.</p>
         </div>
-        <div class="fit-grid">
-          <article class="fit-card">
-            <span class="num">01 · DISCOVER</span>
-            <h3>AI 과제 발굴과 우선순위</h3>
-            <p>“무엇을 만들까”보다 “누가 어떤 결정을 못 하고 있는가”를 먼저 관찰합니다.</p>
-            <div class="evidence">6개 채널을 수동으로 확인하던 현업 문제를 AI 인사이트 제품으로 정의</div>
+        <div class="fit-list">
+          <article class="fit-item">
+            <span>01</span>
+            <div><h3>기회를 정의합니다</h3><p>사용자 행동과 현장 흐름을 관찰해, AI가 해결했을 때 가치가 생기는 문제를 먼저 고릅니다.</p></div>
           </article>
-          <article class="fit-card">
-            <span class="num">02 · BUILD</span>
-            <h3>LLM 도구의 제품화</h3>
-            <p>모델 호출을 화면 데모에서 끝내지 않고 데이터 품질·비용·복구까지 설계합니다.</p>
-            <div class="evidence">Groq 번역·요약 + 캐시 + 자동 발송, AI 호출량 90% 절감</div>
+          <article class="fit-item">
+            <span>02</span>
+            <div><h3>빠르게 제품으로 만듭니다</h3><p>기획 문서에 머물지 않고 직접 프로토타입을 구현해 가설을 실제 사용 경험으로 검증합니다.</p></div>
           </article>
-          <article class="fit-card">
-            <span class="num">03 · IMPROVE</span>
-            <h3>지표 기반 제품 개선</h3>
-            <p>기능 완료가 아니라 실제 사용자의 행동 변화까지 제품의 결과로 봅니다.</p>
-            <div class="evidence">행동 퍼널 분석 후 ‘연기 녹음’에서 ‘문화 맥락 학습’으로 피벗</div>
+          <article class="fit-item">
+            <span>03</span>
+            <div><h3>운영 가능한 구조를 설계합니다</h3><p>비용, 오류, 반복 실행, 배포 이후의 관리까지 함께 고려해 일회성 데모를 제품으로 바꿉니다.</p></div>
           </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="case-1">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="section-kicker">Case 01 · Internal AI Tool</p>
-            <h2>파편화된 팬 반응을<br>매일 읽히는 인사이트로.</h2>
-          </div>
-          <p class="section-lead">
-            글로벌 팬덤 데이터를 수집하는 기술보다, 한국의 기획·마케팅 실무자가
-            <strong>작품별 반응을 한 화면에서 이해하고 다음 대화를 시작하게 하는 것</strong>을 제품 목표로 삼았습니다.
-          </p>
-        </div>
-
-        <article class="case">
-          <div class="case-top">
-            <div class="case-meta">
-              <span class="tag red">단독 기획·설계·개발·운영</span>
-              <span class="tag">TypeScript</span><span class="tag">Node.js</span><span class="tag">Playwright</span>
-              <span class="tag">Groq LLM</span><span class="tag">SQLite</span><span class="tag">Resend</span>
-            </div>
-            <h3>K-Content Intelligence Dashboard</h3>
-            <p class="case-summary">Reddit·YouTube·Instagram·TikTok·MyDramaList·Google Trends의 팬 반응을 자동 수집하고, 한국어 번역·요약·시각화와 뉴스레터 발송까지 연결한 사내 업무도구입니다.</p>
-          </div>
-
-          <div class="metric-grid" aria-label="프로젝트 주요 지표">
-            <div class="metric"><strong>6개</strong><span>서로 다른 글로벌 데이터 소스</span></div>
-            <div class="metric"><strong>2 → 26</strong><span>TOP1 작품 유효 언급 포착량</span></div>
-            <div class="metric"><strong>90%↓</strong><span>영구 캐시 적용 후 AI 호출량</span></div>
-            <div class="metric"><strong>7일</strong><span>무중단 운영 · 자동 발송 7회</span></div>
-          </div>
-
-          <div class="case-body">
-            <div>
-              <div class="story">
-                <span class="story-label">PROBLEM</span>
-                <h4>정보는 많지만, 의사결정에는 쓰이지 않았다</h4>
-                <p>팬 반응이 언어와 플랫폼별로 흩어져 있어 실무자가 매번 직접 확인해야 했고, 결국 반복 업무가 지속되지 못했습니다.</p>
-              </div>
-              <div class="story">
-                <span class="story-label">PRODUCT DECISION</span>
-                <h4>‘수집기’가 아니라 ‘매일 읽는 도구’로 정의</h4>
-                <p>작품·배우별 비교 화면, 한국어 요약, 비전공자 도움말, 정시 뉴스레터까지 사용 흐름 전체를 하나의 제품으로 설계했습니다.</p>
-              </div>
-              <div class="story">
-                <span class="story-label">QUALITY & COST</span>
-                <h4>정확도·비용·복구를 함께 설계</h4>
-                <p>정적·동적 사전을 결합해 표기 차이를 보완하고, SHA-256 영구 캐시로 중복 AI 호출을 막았습니다. 한 소스가 실패해도 나머지 결과는 제공하도록 장애를 격리했습니다.</p>
-              </div>
-            </div>
-            <div class="flow" aria-label="AI 인사이트 파이프라인">
-              <div class="flow-step"><div class="flow-icon">1</div><div><strong>Collect</strong><span>6개 소스 자동·수동 수집</span></div></div>
-              <div class="flow-step"><div class="flow-icon">2</div><div><strong>Normalize</strong><span>공통 텍스트 인터페이스·작품명 매칭</span></div></div>
-              <div class="flow-step"><div class="flow-icon">3</div><div><strong>Enrich with AI</strong><span>언어 감지·한국어 번역·핵심 반응 요약</span></div></div>
-              <div class="flow-step"><div class="flow-icon">4</div><div><strong>Deliver</strong><span>대시보드·시각화·자동 뉴스레터</span></div></div>
-              <div class="flow-step"><div class="flow-icon">5</div><div><strong>Operate</strong><span>캐시·재시도·실패 격리·모니터링</span></div></div>
-            </div>
-          </div>
-
-          <div class="gallery" aria-label="K-Content Dashboard 화면">
-            <figure class="shot"><img src="images/01-dashboard-top.png" alt="K-Content Intelligence Dashboard 메인 화면" loading="lazy"></figure>
-            <div class="shot-stack">
-              <figure class="shot"><img src="images/06-experiment-atlas.png" alt="글로벌 팬덤 분포 Atlas 화면" loading="lazy"></figure>
-              <figure class="shot"><img src="images/08-schedule.png" alt="자동 수집과 발송 일정 화면" loading="lazy"></figure>
-            </div>
-          </div>
-        </article>
-
-        <div class="actions">
-          <a class="button primary" href="https://erimii.github.io/k-content-portfolio/" target="_blank" rel="noreferrer">상세 케이스 스터디 ↗</a>
-          <a class="button" href="https://github.com/erimii/k-content-portfolio" target="_blank" rel="noreferrer">공개 GitHub ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="case-2">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="section-kicker">Case 02 · User-driven Product</p>
-            <h2>만들고 싶은 기능에서<br>사용자가 찾는 가치로.</h2>
-          </div>
-          <p class="section-lead">
-            K-드라마 숏폼 학습 서비스를 웹 MVP로 검증하고, 실제 유입 사용자의 행동을 근거로
-            제품 콘셉트를 전환했습니다. 이후 운영 웹·관리자 도구·분석·하이브리드 앱까지
-            <strong>제품 성장 전 주기</strong>를 담당했습니다.
-          </p>
-        </div>
-
-        <article class="case">
-          <div class="case-top">
-            <div class="case-meta">
-              <span class="tag red">실사용자 기반 제품 피벗</span>
-              <span class="tag">React 19</span><span class="tag">TypeScript</span><span class="tag">Cloudflare</span>
-              <span class="tag">React Native</span><span class="tag">HLS</span><span class="tag">Analytics</span>
-            </div>
-            <h3>JinJJa-K</h3>
-            <p class="case-summary">K-드라마 장면을 보며 자막만으로 놓치는 실제 뉘앙스와 문화적 맥락을 배우는 숏폼 서비스입니다. 웹 MVP부터 운영 서비스, Android 앱 출시까지 제품 전 과정을 연결했습니다.</p>
-          </div>
-
-          <div class="decision" aria-label="제품 피벗 과정">
-            <div class="decision-card">
-              <b>01 · HYPOTHESIS</b>
-              <strong>대사 연기·녹음 학습</strong>
-              <p>직접 말하고 녹화하는 기능을 핵심 가치로 설정한 초기 MVP</p>
-            </div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="decision-card">
-              <b>02 · EVIDENCE</b>
-              <strong>실사용자 행동 퍼널</strong>
-              <p>인스타그램 광고 유입 후 화면별 이탈과 기능 반응을 분석</p>
-            </div>
-            <div class="arrow" aria-hidden="true">→</div>
-            <div class="decision-card">
-              <b>03 · PIVOT</b>
-              <strong>문화 맥락 이해</strong>
-              <p>직역·실제 뉘앙스·K-context를 나누는 Scene Decoder로 전환</p>
-            </div>
-          </div>
-
-          <div class="case-body">
-            <div>
-              <div class="story">
-                <span class="story-label">MEASURE</span>
-                <h4>기능 사용을 이벤트로 먼저 정의</h4>
-                <p><code>decoder.open</code>, 탭 탐색, 완료 행동과 유입 링크를 추적해 기능 반응과 전환 경로를 관리자 대시보드에서 확인하도록 만들었습니다.</p>
-              </div>
-              <div class="story">
-                <span class="story-label">BUILD</span>
-                <h4>제품과 운영 도구를 함께 구축</h4>
-                <p>모바일 영상 피드, Scene Decoder, 콘텐츠 검수, 데일리 지표, 세션 리뷰, 푸시 운영까지 사용자 화면과 백오피스를 함께 설계했습니다.</p>
-              </div>
-            </div>
-            <div>
-              <div class="story">
-                <span class="story-label">SCALE</span>
-                <h4>데이터의 목적에 따라 저장소 분리</h4>
-                <p>원시 이벤트는 R2, 세션 퍼널은 sessions DB, 일별 집계는 analytics DB로 나누고 배치 ID·검증값·수집 원장으로 재처리 중복을 막았습니다.</p>
-              </div>
-              <div class="story">
-                <span class="story-label">DELIVER</span>
-                <h4>검증된 웹을 앱으로 확장</h4>
-                <p>React Native WebView 셸로 웹 자산을 재사용하면서 로그인·푸시·영상 재생은 네이티브 브리지로 보완해 Android 앱 출시까지 완료했습니다.</p>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <div class="actions">
-          <a class="button primary" href="https://github.com/erimii/hybrid-app-case-study" target="_blank" rel="noreferrer">앱 전환 케이스 스터디 ↗</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="principles">
-      <div class="wrap">
-        <div class="section-head">
-          <div>
-            <p class="section-kicker">How I Build</p>
-            <h2>제품을 끝까지<br>작동시키는 세 원칙.</h2>
-          </div>
-          <p class="section-lead">AI의 새로움보다 사용자의 문제, 데모보다 반복 사용, 완벽한 첫 답보다 빠른 검증을 중요하게 생각합니다.</p>
-        </div>
-        <div class="principles">
-          <article class="principle"><h3>문제부터 한 문장으로</h3><p>기술을 고르기 전에 사용자, 반복 행동, 바뀌어야 할 결정을 먼저 명확히 합니다.</p></article>
-          <article class="principle"><h3>실패를 격리 가능한 구조로</h3><p>외부 API와 AI 호출은 실패를 전제로 두고 캐시·재시도·대체 경로·관측 지점을 설계합니다.</p></article>
-          <article class="principle"><h3>지표가 다음 개발을 결정하게</h3><p>출시를 완료로 보지 않고, 행동 데이터를 통해 가설을 확인하고 우선순위를 다시 정합니다.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="contact">
-      <div class="wrap contact">
-        <div>
-          <p class="section-kicker">Lee Ye Rim · 이예림</p>
-          <h2>문제를 찾고,<br>제품으로 답하겠습니다.</h2>
-          <p>서울과학기술대학교 컴퓨터공학과 졸업 · 정보처리기사 · SQLD · ADsP · 빅데이터분석기사</p>
-        </div>
-        <div class="contact-links">
-          <a href="mailto:990303amy88@gmail.com">990303amy88@gmail.com</a>
-          <a href="https://github.com/erimii" target="_blank" rel="noreferrer">github.com/erimii ↗</a>
-          <a href="https://rubii.tistory.com/" target="_blank" rel="noreferrer">개발 기록 블로그 ↗</a>
+          <article class="fit-item">
+            <span>04</span>
+            <div><h3>지표로 다음 결정을 만듭니다</h3><p>유효 언급, 사용 행동, 호출량처럼 제품의 가치를 설명하는 지표를 정의하고 다음 개선으로 연결합니다.</p></div>
+          </article>
         </div>
       </div>
     </section>
   </main>
 
-  <footer>
-    <div class="wrap"><span>© 2026 Lee Ye Rim</span><span>본 포트폴리오의 수치는 공개 가능한 검증 자료만 사용했습니다.</span></div>
+  <footer class="closing">
+    <div class="wrap">
+      <h2>아이디어보다<br><em>사용되는 순간</em>을 만듭니다.</h2>
+      <div class="contact-row">
+        <div class="contact-links">
+          <a href="mailto:990303amy88@gmail.com">990303amy88@gmail.com</a>
+          <a href="https://github.com/erimii" target="_blank" rel="noopener">GitHub ↗</a>
+          <a href="https://rubii.tistory.com/" target="_blank" rel="noopener">Blog ↗</a>
+        </div>
+        <span class="copyright">© 2026 YERIM LEE</span>
+      </div>
+    </div>
   </footer>
 </body>
 </html>
