@@ -669,7 +669,7 @@ pre code {
           <h4>크롤링·스케줄 운영 콘솔</h4>
           <span class="num">F-08</span>
         </div>
-        <p class="desc">매일 09:40 cron 자동 + 수동 트리거 (fire-and-forget). <strong>POST 응답 시간 2.5시간 → 6ms</strong>. 5초 폴링 + sessionStorage로 페이지 이동 후에도 결과 자동 복원.</p>
+        <p class="desc">매일 09:40 cron 자동 + 수동 트리거 (fire-and-forget). <strong>2.5시간짜리 작업의 POST 접수 응답을 6ms 내 반환</strong>하고 실제 수집은 백그라운드에서 계속 수행. 5초 폴링 + sessionStorage로 페이지 이동 후에도 결과 자동 복원.</p>
         <img src="images/08-schedule.png" alt="크롤링·스케줄">
         <div class="tech-tags"><span>fire-and-forget</span><span>polling</span><span>sessionStorage 복원</span></div>
       </div>
@@ -723,7 +723,7 @@ pre code {
     <section id="highlights">
       <h3 class="section-title">05 / Highlights</h3>
 
-      <h4>1. 다중 소스 매칭 알고리즘 (정확도 13배)</h4>
+      <h4>1. 다중 소스 매칭 알고리즘 (TOP1 유효 언급 포착량 13배)</h4>
       <p>정규식 매칭이 영어 축약형(<code>'s</code>, <code>'m</code>)과 인용 댓글을 오탐하는 문제 발견. 노이즈 예외 처리로 코드 복잡도가 커지자 <strong>접근 자체를 폐기</strong>. 정적 사전(한국 드라마 150개) + MDL Top Airing 자동 동기화 사전을 합집합으로 만들고 word-boundary 매칭하는 <strong>hybrid 구조로 재설계</strong>. 한국어 따옴표(「」) 전용 인용 추출로 영어 큰따옴표 오탐 원천 차단. TOP 1 언급 2회 → 26회.</p>
 
       <h4>2. Anti-bot 우회 — 라이브러리 폐기 후 패러다임 전환</h4>
@@ -736,7 +736,7 @@ pre code {
         <li><strong>E</strong> 모든 delay 1.5× (HASHTAG_PAGE_WAIT 등)</li>
       </ul>
 
-      <h4>3. Fire-and-forget 비동기 패턴 (응답 시간 2.5h → 6ms)</h4>
+      <h4>3. Fire-and-forget 비동기 패턴 (2.5시간 작업의 접수 응답 6ms)</h4>
       <p>주간 크롤 2.5시간 → 브라우저 fetch timeout. <strong>POST는 즉시 202 + jobId 반환</strong>하고 백엔드는 백그라운드 실행. 프론트는 5초 폴링 + <code>sessionStorage</code>로 페이지 이동·새로고침 후에도 결과 자동 복원. 중복 실행 방지(409)로 Playwright 자원 충돌 차단.</p>
 
       <h4>4. 차별화 카드 — Atlas + Viral DNA</h4>
@@ -802,7 +802,7 @@ pre code {
         </div>
         <div class="metric">
           <div class="big">6ms</div>
-          <div class="label">주간 크롤 응답 시간<br>(이전 2.5h)</div>
+          <div class="label">작업 접수 응답 시간<br>(실제 크롤은 백그라운드 수행)</div>
         </div>
         <div class="metric">
           <div class="big">168h+</div>
